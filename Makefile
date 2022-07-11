@@ -16,7 +16,7 @@
 
 OBJECTS :=  \
 	main.o \
-	nmppsPut_8s.o 
+	set_8s.o 
 
 
 TARGET=main
