@@ -17,7 +17,8 @@ begin ".text"
 	ar5 = ar0			with gr1 =>> 27;
 						with gr1++;
 						with gr1++;
-	.align
+	.align;
+	
 	skip gr1;
 	
 	/* 
