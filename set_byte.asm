@@ -1,8 +1,8 @@
-/*void set8(unsigned char *data_ptr, int index, unsigned char set_val)*/
-global _set_8: label;
+/*void set_byte(unsigned char *data_ptr, int index, unsigned char set_val)*/
+global _set_byte: label;
 
 begin ".text"
-<_set_8>
+<_set_byte>
 
 	ar5 = ar7 - 2;
 	
@@ -46,17 +46,6 @@ begin ".text"
 	pop ar0, gr0		with gr7 = gr7 or gr0;
 	delayed return;
 		[ar5] = gr7;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 
 end ".text"
