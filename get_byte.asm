@@ -8,12 +8,13 @@ begin ".text"
 	ar5 = ar7 - 2;
 	push ar0, gr0;
 	ar0 = [--ar5]; //*data_ptr
-	gr0 = [--ar5]; //index
+	gr7 = [--ar5]; //index
 	
-						with gr7 = gr0 >> 2; // gr7 = index / 4
-	gr7 = [ar0+=gr7]	with gr0 =<< 30; 
+						with gr0 = gr7 >> 2; // gr7 = index / 4
+	gr7 = [ar0+=gr0]	with gr0 = gr7 << 30; 
 						with gr0 =>> 28;
-	
+	gr0++;
+	gr0++;
 	/* 
 	[----0 byte----][----1 byte----][----2 byte----][----3 byte----] (32 bits)
 	
