@@ -16,30 +16,34 @@
 
 OBJECTS :=  \
 	main.o \
-	set_8s.o 
+	get_byte.o \
+	set_byte.o
+	
 
 
-TARGET=main
+TARGET=test
 
 # Set this to libeasynmc-nmc dir. Relative or absolute. 
 # Make sure you build it prior to building the actual project. 
 
-EASYNMC_DIR     = $(EASYNMC)
+MB7707_MAC		= 1C-1B-0D-E7-7C-98
+#EC-17-66-77-07-00
+#1C-1B-0D-E7-7C-98 - MY MAC
 
-CROSS_COMPILE   =
-NMCPP_FLAGS     = -DNEURO -OPT2 -inline -I$(EASYNMC_DIR)/include
-ASM_FLAGS       = -soc -Sc -Stmp -g -X-q -I$(EASYNMC_DIR)/include
+CROSS_COMPILE   = arm-module-linux-gnueabi-
+NMCPP_FLAGS     = -DNEURO -OPT2 -inline 
+ASM_FLAGS       = -soc -Sc -g -Stmp -X-q 
 C2ASM_FLAGS     = -soc -q 
 
 #BIG FAT WARNING: easynmc.lib MUST go BEFORE libc
 #BIG FAT WARNING: Otherwise argc/argv won't work 
 
-LIBS            = libc05.lib
+LIBS            =  mb7707lib.lib libc05.lib
 
-BUILDER_FLAGS	= -cK1879.cfg -m -heap=0 -heap1=0 -heap2=0 -heap3=0 -stack=20000 \
+BUILDER_FLAGS	= -cK1879.cfg -m -heap=554432 -heap1=0 -heap2=0 -heap3=0 -stack=20000 \
 		  -full_names -d1
-IDIRS           = -I. -I"$(NEURO)/include" 
-LIBDIR		= -l"$(NEURO)/lib" -l"$(EASYNMC_DIR)"
+IDIRS           = -I. -I"$(NEURO)/include"  -I"$(MB7707)/include"
+LIBDIR		= -l"$(NEURO)/lib"  -L"$(MB7707)/lib"
 
 .DEFAULT_GOAL=all
 
@@ -70,7 +74,7 @@ $(TARGET).dump: $(TARGET).abs
 	-$(SILENT_NMDUMP)nmdump -f $(^) > $(@)
 
 run: $(TARGET).abs
-	edcltool -f run_nmc_code.edcl -i eth1
+	$(MB7707)/bin/mb7707run -i -a$(MB7707_MAC)  $(TARGET).abs --send_file_name=./to.txt --send_sect=.data_shared_src.bss --recv_file_name=out.txt --recv_sect=.data_shared_dst.bss  --recv_size=0x5
 
 clean:
 	-$(SILENT_CLEAN)rm -f *.asmx; rm -f *.o; rm -f $(TARGET).abs $(TARGET).dump *.dep \

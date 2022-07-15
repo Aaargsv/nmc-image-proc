@@ -1,6 +1,6 @@
 /*unsigned char get_byte(unsigned char *data_ptr, int index)*/
 
-global <_get_byte>: label;
+global _get_byte: label;
 
 begin ".text"
 <_get_byte>
