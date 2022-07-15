@@ -74,7 +74,10 @@ $(TARGET).dump: $(TARGET).abs
 	-$(SILENT_NMDUMP)nmdump -f $(^) > $(@)
 
 run: $(TARGET).abs
-	$(MB7707)/bin/mb7707run -i -a$(MB7707_MAC)  $(TARGET).abs --send_file_name=./to.txt --send_sect=.data_shared_src.bss --recv_file_name=out.txt --recv_sect=.data_shared_dst.bss  --recv_size=0x5
+	$(MB7707)/bin/mb7707run -i -a$(MB7707_MAC)  $(TARGET).abs --send_file_name=./to.txt \
+	--send_sect=.data_shared_src.bss --recv_file_name=out.txt \
+	--recv_sect=.data_shared_dst.bss --recv_size=0x5 \
+	--send_size=0x5
 
 clean:
 	-$(SILENT_CLEAN)rm -f *.asmx; rm -f *.o; rm -f $(TARGET).abs $(TARGET).dump *.dep \
