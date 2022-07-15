@@ -12,7 +12,7 @@ begin ".text"
 	
 						with gr0 = gr7 >> 2; // gr7 = index / 4
 	gr7 = [ar0+=gr0]	with gr0 = gr7 << 30; 
-						with gr0 =>> 28;
+						with gr0 >>= 28;
 	gr0++;
 	gr0++;
 	/* 
