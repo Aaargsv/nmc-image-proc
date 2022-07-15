@@ -37,7 +37,7 @@ begin ".text"
 	
 	
 	delayed return with gr7 >>= 24;
-		nul 		
+		nul; 		
 		nul;
 		nul;
 	
@@ -76,4 +76,4 @@ begin ".text"
 		nul;			
 		nul;
 						
-end ".text"
+end ".text";
