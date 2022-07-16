@@ -4,8 +4,8 @@
 	long output_text[32];
 	
 	
-extern unsigned char get_byte(unsigned char *data_ptr, int index)
-extern void set_byte(unsigned char *data_ptr, int index, unsigned char set_val)
+extern unsigned char get_byte(void *data_ptr, int index);
+extern void set_byte(void *data_ptr, int index, unsigned char set_val);
 
 
 int main()
