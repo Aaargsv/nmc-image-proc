@@ -38,6 +38,8 @@ begin ".text"
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
 		[ar5] = gr7;
+		nul;
+		nul;
 	
 	//if 1 byte
 	gr0 = 0FF00FFFFh with gr1 <<= 16;
@@ -45,13 +47,17 @@ begin ".text"
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
 		[ar5] = gr7;
-	
+		nul;
+		nul;
+		
 	//if 2 byte
 	gr0 = 0FFFF00FFh with gr1 <<= 8;
 	pop ar0, gr0 		with gr7 = gr0 and gr7;
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
 		[ar5] = gr7;
+		nul;
+		nul;
 	
 	//if 3 byte
 	gr0 = 0FFFFFF00h;
@@ -59,6 +65,8 @@ begin ".text"
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
 		[ar5] = gr7;
+		nul;
+		nul;
 
 
 end ".text";

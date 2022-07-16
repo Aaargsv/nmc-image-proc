@@ -1,28 +1,21 @@
-
-
-
-
-extern int nmppsPut_8s(int number, int skip) ;
-
+#pragma data_section ".data_shared_src.bss"
+	long input_text[32];
+#pragma data_section ".data_shared_dst.bss"
+	long output_text[32];
+	
+	
+extern unsigned char get_byte(void *data_ptr, int index);
+extern void set_byte(void *data_ptr, int index, unsigned char set_val);
 
 
 int main()
 {
-
-	int c;
+	unsigned char val;
 	
-	c =  nmppsPut_8s(100, 9);
-
-	
-	c =  nmppsPut_8s(100, 8);
-
-	
-	c =  nmppsPut_8s(100, 16);
-
-	
-	c =  nmppsPut_8s(100, 24);
-
-	
+	for (int i = 0; i < 20; i++) {
+			val = get_byte(input_text, i);
+			set_byte(output_text, i, ++val);
+	}
 	
 	return 0; 
 } 
