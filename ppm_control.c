@@ -44,11 +44,10 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	
 	/****read width****/
 	int i;
-	pos++;
-	for (i = 0; buf[i] != ' '; i++, pos++) {
+	for (i = 0; buf[i] != ' '; i++) {
 		if (i > 32)
 			return 0;
-		buf[i] = get_byte(data_ptr, pos);
+		buf[i] = get_byte(data_ptr, ++pos);
 	}
 	buf[i] = '\0';
 	
@@ -69,11 +68,11 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	header_info->width = (int)image_size_param;
 	
 	/****read height****/
-	pos++;
-	for (i = 0; buf[i] != '\n'; i++, pos++) {
+	
+	for (i = 0; buf[i] != '\n'; i++) {
 		if (i > 32)
 			return 0;
-		buf[i] = get_byte(data_ptr, pos);
+		buf[i] = get_byte(data_ptr, ++pos);
 	}
 	buf[i] = '\0';
 	
@@ -92,11 +91,11 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	
 	/****depth****/
 	
-	pos++;
-	for (i = 0; buf[i] != '\n'; i++, pos++) {
+
+	for (i = 0; buf[i] != '\n'; i++) {
 		if (i > 32)
 			return 0;
-		buf[i] = get_byte(data_ptr, pos);
+		buf[i] = get_byte(data_ptr, ++pos);
 	}
 	buf[i] = '\0';
 	
@@ -140,15 +139,15 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	set_byte(data_ptr, ++pos, '\n');
 	
 	
-	char buf[11];
+	char buf[11]; //buffer for width, height and depth
 	
 	/***write width***/
 	sprintf(buf, "%d", header_info->width);
 	int len = strlen(buf);
 	
-	pos++;
-	for (int i = 0; i < len; i++, pos++) 
-		set_byte(data_ptr, pos, buf[i]);
+
+	for (int i = 0; i < len; i++) 
+		set_byte(data_ptr, ++pos, buf[i]);
 	
 	set_byte(data_ptr, ++pos, ' ');
 	
@@ -157,18 +156,18 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	sprintf(buf, "%d", header_info->height);
 	int len = strlen(buf);
 	
-	pos++;
-	for (int i = 0; i < len; i++, pos++) 
-		set_byte(data_ptr, pos, buf[i]);
+
+	for (int i = 0; i < len; i++) 
+		set_byte(data_ptr, ++pos, buf[i]);
 	
 	set_byte(data_ptr, ++pos, '\n');
 	
 	/***write depth***/
 	sprintf(buf, "%d", header_info->depth);
 	int len = strlen(buf);
-	pos++;
-	for (int i = 0; i < len; i++, pos++) 
-		set_byte(data_ptr, pos, buf[i]);
+
+	for (int i = 0; i < len; i++) 
+		set_byte(data_ptr, ++pos, buf[i]);
 	
 	set_byte(data_ptr, ++pos, '\n');
 	
