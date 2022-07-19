@@ -44,6 +44,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	
 	/****read width****/
 	int i;
+	pos++;
 	for (i = 0; buf[i] != ' '; i++, pos++) {
 		if (i > 32)
 			return 0;
@@ -119,3 +120,60 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	return pos;
 	
 }
+
+int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comment)
+{
+	int pos = 0;
+	
+	/***write format (magic number)***/
+	set_byte(data_ptr, pos++, header_info->format[0]);
+	set_byte(data_ptr, pos++, header_info->format[1]);
+	set_byte(data_ptr, pos++, '\n');
+	
+	/***write comment***/
+	set_byte(data_ptr, pos++, '#');
+	for (int i = 0; comment[i] != '\0'; i++, pos++) {
+		if (i > 32)
+			break;
+		set_byte(data_ptr, pos, comment[i]);
+	}
+	set_byte(data_ptr, ++pos, '\n');
+	
+	
+	char buf[11];
+	
+	/***write width***/
+	sprintf(buf, "%d", header_info->width);
+	int len = strlen(buf);
+	
+	pos++;
+	for (int i = 0; i < len; i++, pos++) 
+		set_byte(data_ptr, pos, buf[i]);
+	
+	set_byte(data_ptr, ++pos, ' ');
+	
+	
+	/***write height***/
+	sprintf(buf, "%d", header_info->height);
+	int len = strlen(buf);
+	
+	pos++;
+	for (int i = 0; i < len; i++, pos++) 
+		set_byte(data_ptr, pos, buf[i]);
+	
+	set_byte(data_ptr, ++pos, '\n');
+	
+	/***write depth***/
+	sprintf(buf, "%d", header_info->depth);
+	int len = strlen(buf);
+	pos++;
+	for (int i = 0; i < len; i++, pos++) 
+		set_byte(data_ptr, pos, buf[i]);
+	
+	set_byte(data_ptr, ++pos, '\n');
+	
+	return pos
+}
+
+
+
