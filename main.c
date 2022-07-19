@@ -3,10 +3,7 @@
 #pragma data_section ".data_shared_dst.bss"
 	long output_text[32];
 	
-	
-extern unsigned char get_byte(void *data_ptr, int index);
-extern void set_byte(void *data_ptr, int index, unsigned char set_val);
-
+#include "nmc_support.h"
 
 int main()
 {
