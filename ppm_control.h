@@ -2,11 +2,11 @@
 #define PPM_CONTROL_GUARD
 
 struct ppm_header {
-	unsigned char format[3],
-	int width,
-	int height,
-	int depth,
-	int start_raw
+	char format[3];
+	int width;
+	int height;
+	int depth;
+	int start_raw;
 };
 
 typedef struct ppm_header ppm_header_t;

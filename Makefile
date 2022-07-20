@@ -17,7 +17,8 @@
 OBJECTS :=  \
 	main.o \
 	get_byte.o \
-	set_byte.o
+	set_byte.o \
+	ppm_control.o
 	
 
 

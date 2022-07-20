@@ -1,7 +1,8 @@
-#include "ppm_contol.h"
+#include "ppm_control.h"
 #include "nmc_support.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <errno.h>
 #include <limits.h>
 
@@ -19,10 +20,10 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	
 	
 	
-	if ( strcmp("P6\n", format) == 0 )
-		strcpy(header_info->format, "P6")
-	else if ( strcmp("P5\n", format) == 0 )
-		strcpy(header_info->format, "P5")
+	if ( strcmp("P6\n", (char const *)format) == 0 )
+		strcpy(header_info->format, "P6");
+	else if ( strcmp("P5\n", (char const *)format) == 0 )
+		strcpy(header_info->format, "P5");
 	else
 		return 0;
 	
@@ -40,7 +41,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 		}
 	}
 	
-	unsigned char buf[64];
+	char buf[64];
 	
 	/****read width****/
 	int i;
@@ -54,7 +55,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	long image_size_param;
 	char *end_ptr;
 	
-	image_size_param = strtol(buf, &end_ptr, 10);
+	image_size_param = strtol((char const *)buf, &end_ptr, 10);
 	
 	if (buf == end_ptr || *end_ptr != '\0')
 		return 0;
@@ -76,7 +77,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	}
 	buf[i] = '\0';
 	
-	image_size_param = strtol(buf, &end_ptr, 10);
+	image_size_param = strtol((char const *)buf, &end_ptr, 10);
 	
 	if (buf == end_ptr || *end_ptr != '\0')
 		return 0;
@@ -99,7 +100,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	}
 	buf[i] = '\0';
 	
-	image_size_param = strtol(buf, &end_ptr, 10);
+	image_size_param = strtol((char const *)buf, &end_ptr, 10);
 	
 	if (buf == end_ptr || *end_ptr != '\0')
 		return 0;
@@ -114,7 +115,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	
 	pos++;
 	
-	ppm_header->start_raw = pos;
+	header_info->start_raw = pos;
 	
 	return pos;
 	
@@ -154,7 +155,7 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	
 	/***write height***/
 	sprintf(buf, "%d", header_info->height);
-	int len = strlen(buf);
+	len = strlen(buf);
 	
 
 	for (int i = 0; i < len; i++) 
@@ -164,14 +165,14 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	
 	/***write depth***/
 	sprintf(buf, "%d", header_info->depth);
-	int len = strlen(buf);
+	len = strlen(buf);
 
 	for (int i = 0; i < len; i++) 
 		set_byte(data_ptr, ++pos, buf[i]);
 	
 	set_byte(data_ptr, ++pos, '\n');
 	
-	return pos
+	return pos;
 }
 
 
