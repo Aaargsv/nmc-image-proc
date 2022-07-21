@@ -132,10 +132,11 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	
 	/***write comment***/
 	set_byte(data_ptr, pos++, '#');
-	for (int i = 0; comment[i] != '\0'; i++, pos++) {
+	
+	for (int i = 0; comment[i] != '\0'; i++) {
 		if (i > 32)
 			break;
-		set_byte(data_ptr, pos, comment[i]);
+		set_byte(data_ptr, ++pos, comment[i]);
 	}
 	set_byte(data_ptr, ++pos, '\n');
 	
