@@ -10,10 +10,9 @@ extern void set_byte(void *data_ptr, int index, unsigned char set_val);
 
 int main()
 {
-	unsigned char val;
+	unsigned char val = 'A';
 	
 	for (int i = 0; i < 20; i++) {
-			val = get_byte(input_text, i);
 			set_byte(output_text, i, ++val);
 	}
 	
