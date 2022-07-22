@@ -23,6 +23,7 @@ begin ".text"
 	skip gr0;
 	
 	/* 
+	there is little endian
 	[----0 byte----][----1 byte----][----2 byte----][----3 byte----] (32 bits)
 	
 	   if 0 byte then gr1 = 2   (00010)
@@ -31,9 +32,13 @@ begin ".text"
 	   if 3 byte then gr1 = 26  (11010)
 	*/
 	
-
+	/*we need to set the bytes in reverse order due to little endian*/
+	/*there is in assembly code, we accept that order is
+	[----3 byte----][----2 byte----][----1 byte----][----0 byte----] (32 bits)
+	*/
+	
 	//if 0 byte
-	gr0 = 000FFFFFFh with gr1 <<= 24; //gr1 - mask
+	gr0 = 0FFFFFF00h;
 	pop ar0, gr0 		with gr7 = gr0 and gr7;
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
@@ -42,7 +47,7 @@ begin ".text"
 		nul;
 	
 	//if 1 byte
-	gr0 = 0FF00FFFFh with gr1 <<= 16;
+	gr0 = 0FFFF00FFh with gr1 <<= 8;
 	pop ar0, gr0 		with gr7 = gr0 and gr7;
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
@@ -51,7 +56,7 @@ begin ".text"
 		nul;
 		
 	//if 2 byte
-	gr0 = 0FFFF00FFh with gr1 <<= 8;
+	gr0 = 0FF00FFFFh with gr1 <<= 16;
 	pop ar0, gr0 		with gr7 = gr0 and gr7;
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
@@ -60,13 +65,12 @@ begin ".text"
 		nul;
 	
 	//if 3 byte
-	gr0 = 0FFFFFF00h;
+	gr0 = 000FFFFFFh with gr1 <<= 24; //gr1 - mask
 	pop ar0, gr0 		with gr7 = gr0 and gr7;
 	pop ar1, gr1		with gr7 = gr7 or gr1;
 	delayed return;
 		[ar5] = gr7;
 		nul;
 		nul;
-
 
 end ".text";
