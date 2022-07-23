@@ -10,15 +10,15 @@ int main()
 {
 
 	
-	ppm_header_t *image1;
+	ppm_header_t image1;
 	
-	strncpy(image1->format, "P6", 3);
+	strncpy(image1.format, "P6", 3);
 	
-	image1->width = 100;
-	image1->height = 100;
-	image1->depth = 255;
+	image1.width = 100;
+	image1.height = 100;
+	image1.depth = 255;
 	
-	int pos_raw = ppm_save_header(output_text, image1, "");
+	int pos_raw = ppm_save_header(output_text, &image1, "");
 	
 	/*for (int i = 0; i < image1->height; i++) {
 		for (int j = 0; j < image1->width; j++) {
