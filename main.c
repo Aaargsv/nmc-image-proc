@@ -20,29 +20,26 @@ int main()
 	
 	int pos_raw = ppm_save_header(output_text, &image1, "");
 	
-	/*for (int i = 0; i < image1->height; i++) {
-		for (int j = 0; j < image1->width; j++) {
+	for (int i = 0; i < image1.height; i++) {
+		for (int j = 0; j < image1.width; j++) {
 			
 			if (i < 33) {
 				set_byte(output_text, pos_raw++, (unsigned char) 255);
 				set_byte(output_text, pos_raw++, (unsigned char) 0);
 				set_byte(output_text, pos_raw++, (unsigned char) 0);
 			}
-			
-			if (i < 66) {
+			else if (i < 66) {
 				set_byte(output_text, pos_raw++, (unsigned char) 0);
 				set_byte(output_text, pos_raw++, (unsigned char) 0);
 				set_byte(output_text, pos_raw++, (unsigned char) 255);
 			}
-			
-			if (i < 100) {
+			else  {
 				set_byte(output_text, pos_raw++, (unsigned char) 0);
 				set_byte(output_text, pos_raw++, (unsigned char) 255);
 				set_byte(output_text, pos_raw++, (unsigned char) 0);
 			}	
 		}
-	}*/
-	
+	}
 	return 0; 
 } 
 
