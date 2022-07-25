@@ -9,23 +9,21 @@
 int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 {
 	int pos = 0;
-	unsigned char format[5];
+	unsigned char format[3];
 	
 	
 	/****read format (magic number)***/
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 3; i++)
 		format[i] = get_byte(data_ptr, pos++);
 	
-	format[5] = '\0';
+	format[2] = '\0';
 	
-	
-	
-	if ( strcmp("P6\n", (char const *)format) == 0 )
+	if ( strcmp("P6", (char const *)format) == 0 )
 		strcpy(header_info->format, "P6");
-	else if ( strcmp("P5\n", (char const *)format) == 0 )
+	else if ( strcmp("P5", (char const *)format) == 0 )
 		strcpy(header_info->format, "P5");
 	else
-		return 0;
+		return ERR_FORMAT;
 	
 
 
@@ -37,7 +35,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 		while (symbol != '\n') {
 			symbol = get_byte(data_ptr, pos++);
 			if (pos > 1024)
-				return 0;
+				return ERR_COMMENT;
 		}
 	}
 	
@@ -45,10 +43,13 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	
 	/****read width****/
 	int i;
-	for (i = 0; buf[i] != ' '; i++) {
+	for (i = 0; ; i++) {
 		if (i > 32)
-			return 0;
+			return ERR_WIDTH;
 		buf[i] = get_byte(data_ptr, pos++);
+		
+		if (buf[i] == ' ')
+			break;
 	}
 	buf[i] = '\0';
 	
@@ -58,61 +59,66 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	image_size_param = strtol((char const *)buf, &end_ptr, 10);
 	
 	if (buf == end_ptr || *end_ptr != '\0')
-		return 0;
+		return ERR_WIDTH;
 	
 	if (errno == ERANGE)
-		return 0;
+		return ERR_WIDTH;
 	
 	if (image_size_param > INT_MAX)
-		return 0;
+		return ERR_WIDTH;
 	
 	header_info->width = (int)image_size_param;
 	
 	/****read height****/
 	
-	for (i = 0; buf[i] != '\n'; i++) {
+	for (i = 0; ; i++) {
 		if (i > 32)
-			return 0;
+			return ERR_HEIGHT;
 		buf[i] = get_byte(data_ptr, pos++);
+		if (buf[i] == '\n')
+			break;
+		
 	}
 	buf[i] = '\0';
 	
 	image_size_param = strtol((char const *)buf, &end_ptr, 10);
 	
 	if (buf == end_ptr || *end_ptr != '\0')
-		return 0;
+		return ERR_HEIGHT;
 	
 	if (errno == ERANGE)
-		return 0;
+		return ERR_HEIGHT;
 	
 	if (image_size_param > INT_MAX)
-		return 0;
+		return ERR_HEIGHT;
 	
 	header_info->height = (int)image_size_param;
 	
 	/****depth****/
 	
 
-	for (i = 0; buf[i] != '\n'; i++) {
+	for (i = 0; ; i++) {
 		if (i > 32)
-			return 0;
+			return 10;
 		buf[i] = get_byte(data_ptr, pos++);
+		if (buf[i] == '\n')
+			break;
+	
 	}
 	buf[i] = '\0';
 	
 	image_size_param = strtol((char const *)buf, &end_ptr, 10);
 	
 	if (buf == end_ptr || *end_ptr != '\0')
-		return 0;
+		return ERR_DEPTH;
 	
 	if (errno == ERANGE)
-		return 0;
+		return ERR_DEPTH;
 	
 	if (image_size_param > INT_MAX)
-		return 0;
+		return ERR_DEPTH;
 	
 	header_info->depth = (int)image_size_param;
-	
 	pos++;
 	
 	header_info->start_raw = pos;

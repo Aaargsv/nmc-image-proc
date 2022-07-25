@@ -9,6 +9,9 @@ struct ppm_header {
 	int start_raw;
 };
 
+enum errors {ERR_FORMAT, ERR_COMMENT, ERR_WIDTH, 
+			 ERR_HEIGHT, ERR_DEPTH};
+
 typedef struct ppm_header ppm_header_t;
 
 extern int ppm_read_header(void *data_ptr, ppm_header_t *header_info);
