@@ -13,8 +13,8 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	
 	
 	/****read format (magic number)***/
-	for (int i = 0; i < 4; i++, pos++)
-		format[i] = get_byte(data_ptr, pos);
+	for (int i = 0; i < 4; i++)
+		format[i] = get_byte(data_ptr, pos++);
 	
 	format[5] = '\0';
 	
@@ -30,12 +30,12 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 
 
 	unsigned char symbol;
-	symbol = get_byte(data_ptr, ++pos);
+	symbol = get_byte(data_ptr, pos++);
 	
 	/****read comment***/
 	while (symbol == '#') {
 		while (symbol != '\n') {
-			symbol = get_byte(data_ptr, ++pos);
+			symbol = get_byte(data_ptr, pos++);
 			if (pos > 1024)
 				return 0;
 		}
@@ -48,7 +48,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	for (i = 0; buf[i] != ' '; i++) {
 		if (i > 32)
 			return 0;
-		buf[i] = get_byte(data_ptr, ++pos);
+		buf[i] = get_byte(data_ptr, pos++);
 	}
 	buf[i] = '\0';
 	
@@ -73,7 +73,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	for (i = 0; buf[i] != '\n'; i++) {
 		if (i > 32)
 			return 0;
-		buf[i] = get_byte(data_ptr, ++pos);
+		buf[i] = get_byte(data_ptr, pos++);
 	}
 	buf[i] = '\0';
 	
@@ -96,7 +96,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 	for (i = 0; buf[i] != '\n'; i++) {
 		if (i > 32)
 			return 0;
-		buf[i] = get_byte(data_ptr, ++pos);
+		buf[i] = get_byte(data_ptr, pos++);
 	}
 	buf[i] = '\0';
 	
@@ -130,18 +130,19 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	set_byte(data_ptr, pos++, header_info->format[1]);
 	set_byte(data_ptr, pos++, '\n');
 	
-	if (comment[0] != '\0') {
-		/***write comment***/
-		set_byte(data_ptr, pos++, '#');
-		for (int i = 0; comment[i] != '\0'; i++, pos++) {
-			if (i > 32)
-				break;
-		set_byte(data_ptr, pos, comment[i]);
-		}
-		set_byte(data_ptr, ++pos, '\n');
+
+	/***write comment***/
+	set_byte(data_ptr, pos++, '#');
+	
+	for (int i = 0; comment[i] != '\0'; i++) {
+		if (i > 32)
+			break;
+		set_byte(data_ptr, pos++, comment[i]);
 	}
 	
+	set_byte(data_ptr, pos++, '\n');
 	
+
 	
 	char buf[11]; //buffer for width, height and depth
 	
@@ -151,9 +152,9 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	
 
 	for (int i = 0; i < len; i++) 
-		set_byte(data_ptr, ++pos, buf[i]);
+		set_byte(data_ptr, pos++, buf[i]);
 	
-	set_byte(data_ptr, ++pos, ' ');
+	set_byte(data_ptr, pos++, ' ');
 	
 	
 	/***write height***/
@@ -162,18 +163,18 @@ int ppm_save_header(void *data_ptr, ppm_header_t *header_info, const char *comme
 	
 
 	for (int i = 0; i < len; i++) 
-		set_byte(data_ptr, ++pos, buf[i]);
+		set_byte(data_ptr, pos++, buf[i]);
 	
-	set_byte(data_ptr, ++pos, '\n');
+	set_byte(data_ptr, pos++, '\n');
 	
 	/***write depth***/
 	sprintf(buf, "%d", header_info->depth);
 	len = strlen(buf);
 
 	for (int i = 0; i < len; i++) 
-		set_byte(data_ptr, ++pos, buf[i]);
+		set_byte(data_ptr, pos++, buf[i]);
 	
-	set_byte(data_ptr, ++pos, '\n');
+	set_byte(data_ptr, pos++, '\n');
 	
 	return pos;
 }
