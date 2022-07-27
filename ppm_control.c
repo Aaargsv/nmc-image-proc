@@ -119,7 +119,7 @@ int ppm_read_header (void *data_ptr, ppm_header_t *header_info)
 		return ERR_DEPTH;
 	
 	header_info->depth = (int)image_size_param;
-	pos++;
+
 	
 	header_info->start_raw = pos;
 	

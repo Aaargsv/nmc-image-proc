@@ -1,7 +1,7 @@
 #pragma data_section ".data_shared_src.bss"
-	long input_text[100 * 100 / 8 + 17 / 8 + 1];
+	long input_text[100 * 100 * 3 / 8 + 17 / 8 + 1];
 #pragma data_section ".data_shared_dst.bss"
-	long output_text[100 * 100 / 8 + 17 / 8 + 1];
+	long output_text[100 * 100 * 3 / 8 + 17 / 8 + 1];
 	
 #include "nmc_support.h"
 #include "ppm_control.h"
@@ -20,25 +20,20 @@ int main()
 	
 	
 	pixel_t val;
-	
-	unsigned char red;
-	unsigned char green;
-	unsigned char blue;
+
 	
 	for (int i = 0; i < image1.height; i++) {
 		for (int j = 0; j < image1.width; j++) {
 			
-			red 	= get_byte(input_text, pos_raw1++);
-			green 	= get_byte(input_text, pos_raw1++);
-			blue 	= get_byte(input_text, pos_raw1++);
+			val.red 	= get_byte(input_text, pos_raw1++);
+			val.green 	= get_byte(input_text, pos_raw1++);
+			val.blue 	= get_byte(input_text, pos_raw1++);
 
-			set_byte(output_text, pos_raw2++, (unsigned char)128);
-			set_byte(output_text, pos_raw2++, (unsigned char)128);
-			set_byte(output_text, pos_raw2++, (unsigned char)128);
+			set_byte(output_text, pos_raw2++, (unsigned char)255 - val.red);
+			set_byte(output_text, pos_raw2++, (unsigned char)255 - val.green);
+			set_byte(output_text, pos_raw2++, (unsigned char)255 - val.blue);
 		}
 	}
-	
-	
 	
 	return 0; 
 } 
