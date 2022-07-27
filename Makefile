@@ -77,8 +77,8 @@ $(TARGET).dump: $(TARGET).abs
 run: $(TARGET).abs
 	$(MB7707)/bin/mb7707run -i -a$(MB7707_MAC)  $(TARGET).abs --send_file_name=in.ppm \
 	--send_sect=.data_shared_src.bss --recv_file_name=out.ppm \
-	--recv_sect=.data_shared_dst.bss --recv_size=0x2504 \
-	--send_size=0x2504
+	--recv_sect=.data_shared_dst.bss --recv_size=0x9C9 \
+	--send_size=0x9C9
 
 clean:
 	-$(SILENT_CLEAN)rm -f *.asmx; rm -f *.o; rm -f $(TARGET).abs $(TARGET).dump *.dep \
